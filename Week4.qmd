@@ -4,6 +4,48 @@ format: html
 editor: visual
 ---
 
-## Exercise 1
+## Packages
+```{r}
+## Default repository
+local({r <- getOption("repos")
+r["CRAN"] <- "http://cran.r-project.org" 
+options(repos=r)
+})
 
+## Define function check_pkg to tests if package is already installed and hence only needs loading
+check_pkg <- function(x)
+{
+  if (!require(x,character.only = TRUE))
+  {
+    install.packages(x,dep=TRUE)
+    if(!require(x,character.only = TRUE)) stop("Package not found")
+  }
+}
+```
+
+```{r, warning = FALSE, message = FALSE}
+## Call check_pkg()
+check_pkg("pacman")
+check_pkg("dplyr")
+check_pkg("ggplot2")
+check_pkg("readr")
+check_pkg("tidyr")
+check_pkg("sf")
+check_pkg("terra")
+check_pkg("tmap")
+check_pkg("zoo")
+check_pkg("units")
+check_pkg("plotly")
+check_pkg("patchwork")
+check_pkg("gitcreds")
+```
+
+## Exercise 1
+```{r}
+# Read data
+wildschwein_BE <- read_delim("data/wildschwein_BE_2056.csv", ",")
+
+# Change to SF object
+wildschwein_BE <- st_as_sf(wildschwein_BE, coords = c("E", "N"), crs = 2056)
+```
 
