@@ -1,9 +1,10 @@
 ---
-title: "Week 4"
+title: "Exercise 4"
 format: html
 editor: visual
 ---
 
+# Preparation
 ## Packages
 ```{r}
 ## Default repository
@@ -38,14 +39,49 @@ check_pkg("units")
 check_pkg("plotly")
 check_pkg("patchwork")
 check_pkg("gitcreds")
+check_pkg("rjson")
 ```
 
-## Exercise 1
+# Task 1 + 2 + 3 + 4
+I was not able to solve exercises 1-4 because my data looked very different from the example data and I had too much trouble adapting the example code to work with it. I'm using data from Google Timeline, which doesn't have regular timestamps and a description with everything in it (place, time from when to when, distance). 
+
+## Load Data
 ```{r}
-# Read data
-wildschwein_BE <- read_delim("data/wildschwein_BE_2056.csv", ",")
+# Read
+mittwoch <- st_read(dsn = "data/01.05.24.kml") 
+as.data.frame(mittwoch)
 
 # Change to SF object
-wildschwein_BE <- st_as_sf(wildschwein_BE, coords = c("E", "N"), crs = 2056)
+mittwoch <- mittwoch |>
+  st_as_sf(coords = c("E", "N"), crs = 2056, remove = FALSE)
+mittwoch
+
+# As dataframe
+mittwoch_df <- as.data.frame(mittwoch)
+mittwoch_df
+```
+
+## Visualize
+```{r}
+# Filter
+walking <- filter(mittwoch, Name == "Walking")
+tram <- filter(mittwoch, Name == "On a tram")
+bus <- filter(mittwoch, Name == "On a bus")
+train <- filter(mittwoch, Name == "On a train")
+
+# Plot
+ggplot() +
+  geom_sf(data = mittwoch, color = "blue") +
+  geom_sf(data = walking, color = "red") +
+  geom_sf(data = tram, color = "red") +
+  geom_sf(data = bus, color = "red") +
+  geom_sf(data = train, color = "red") 
+```
+
+# Task 5
+```{r}
+# Read data
+pedestrian <- read_delim("datasets/pedestrian.csv", ",")
+
 ```
 
