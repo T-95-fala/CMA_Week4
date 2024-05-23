@@ -40,6 +40,7 @@ check_pkg("plotly")
 check_pkg("patchwork")
 check_pkg("gitcreds")
 check_pkg("rjson")
+check_pkg("SimilarityMeasures")
 ```
 
 # Task 1 + 2 + 3 + 4
@@ -81,7 +82,67 @@ ggplot() +
 # Task 5
 ```{r}
 # Read data
-pedestrian <- read_delim("datasets/pedestrian.csv", ",")
+pedestrian <- read_delim("data/pedestrian.csv", ",")
+head(pedestrian)
 
+# Change to SF
+pedestrian_sf <- pedestrian |>
+  st_as_sf(coords = c("E", "N"), crs = 2056, remove = FALSE)
+
+# Plot
+ggplot() +
+  geom_sf(data = pedestrian_sf,
+          aes(x = E, y = N, color = TrajID))
+```
+
+```{r}
+## Create matrices
+
+# TrajID = 1
+traj1 <- pedestrian |>
+  filter(TrajID == 1) |>
+  select(E, N) |>
+  as.matrix()
+
+# TrajID = 2
+traj2 <- pedestrian %>%
+  filter(TrajID == 2) %>%
+  select(E, N) %>%
+  as.matrix()
+
+# TrajID = 3
+traj3 <- pedestrian %>%
+  filter(TrajID == 3) %>%
+  select(E, N) %>%
+  as.matrix()
+
+# TrajID = 4
+traj4 <- pedestrian %>%
+  filter(TrajID == 4) %>%
+  select(E, N) %>%
+  as.matrix()
+
+# TrajID = 5
+traj5 <- pedestrian %>%
+  filter(TrajID == 5) %>%
+  select(E, N) %>%
+  as.matrix()
+
+# TrajID = 6
+traj6 <- pedestrian %>%
+  filter(TrajID == 6) %>%
+  select(E, N) %>%
+  as.matrix()
+```
+
+
+# Task 6
+```{r}
+## Compare trajectory 1 to trajectories 2-6 using different similarity measures 
+
+help(package = "SimilarityMeasures")
+
+# DTW
+SimilarityMeasures::DTW(traj1 = traj1, traj2 = traj2)
 ```
 
